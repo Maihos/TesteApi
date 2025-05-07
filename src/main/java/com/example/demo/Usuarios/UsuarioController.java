@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.Usuarios;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
