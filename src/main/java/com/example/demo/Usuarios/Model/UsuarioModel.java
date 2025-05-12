@@ -2,6 +2,7 @@ package com.example.demo.Usuarios.Model;
 
 import java.time.LocalDate;
 
+import org.hibernate.annotations.DialectOverride.Version;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.Column;
@@ -9,19 +10,28 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 @Entity
+@Table(name = "tb_Cadastro")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class UsuarioModel {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Definindo Estrategia de criaçao de tabela
     private Long id;
+
+    @Version(major = 0)
+    private Integer versao;
 
     @Column
     @NotBlank(message = "Nome obrigatorio") // validacao

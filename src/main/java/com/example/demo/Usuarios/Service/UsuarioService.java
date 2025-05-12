@@ -28,20 +28,18 @@ public class UsuarioService {
     }
 
     public UsuarioDto cadastrar(@Valid UsuarioDto usuarioDto) {
-        UsuarioModel user = usuarioMapper.map(usuarioDto);
-        user = usuarioRepository.save(user);
-        if (usuarioRepository.existsByEmail(user.getEmail())) {
+        if (usuarioRepository.existsByEmail(usuarioDto.getEmail())) {
             throw new RuntimeException("Email ja cadastrado");
         }
+        UsuarioModel user = usuarioMapper.map(usuarioDto);
+        
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyyyy");
         user.setSenha(user.getDataNascimento().format(formatter));
+        
+        user = usuarioRepository.save(user);
         return usuarioMapper.map(user);
     }
-
-    public Optional<UsuarioModel> buscarPorId(long id) {
-        return usuarioRepository.findById(id);
-    }
-
+    
     public UsuarioDto atualizar(long id, UsuarioDto usuarioDto){
         Optional<UsuarioModel> usuarioExistente = usuarioRepository.findById(id);
         if (usuarioExistente.isPresent()){
@@ -68,6 +66,5 @@ public class UsuarioService {
         Optional<UsuarioModel> listarId = usuarioRepository.findById(id);
         return listarId.map(usuarioMapper::map).orElse(null);
     }
-
 
 }

@@ -24,7 +24,7 @@ public class UsuarioMapper {
 
     public UsuarioDto map(UsuarioModel usuario){
 
-        UsuarioDto usuarioDto = new UsuarioDto(0, null, null, null, null);
+        UsuarioDto usuarioDto = new UsuarioDto();
         usuarioDto.setId(usuario.getId());
         usuarioDto.setNome(usuario.getNome());
         usuarioDto.setEmail(usuario.getEmail());
