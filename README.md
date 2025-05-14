@@ -41,7 +41,7 @@ Este é um projeto em Java utilizando o **Spring Boot** para implementar uma API
 ## Endpoints
 ### 1. **Cadastrar Usuário**
 
-**POST /api/usuarios**
+**POST /api/cadastrar**
 
 - **Request Body**:
   ```json
@@ -53,12 +53,12 @@ Este é um projeto em Java utilizando o **Spring Boot** para implementar uma API
   
 **Resposta:**
 
-- 200 OK: Usuário cadastrado com sucesso.
+- 201 CREATED: Usuário cadastrado com sucesso.
 
 - 400 Bad Request: Caso o e-mail já exista na base de dados.
 
 ## 2. Atualizar Usuário
-PUT /api/usuarios/{id}
+PUT /api/atualizar/{id}
 
 - **Request Body:**
 
@@ -78,7 +78,7 @@ PUT /api/usuarios/{id}
 - 404 Not Found: Usuário não encontrado.
 
 ## 3. Deletar Usuário
-DELETE /api/usuarios/{id}
+DELETE /api/deletar/{id}
 
 **Resposta:**
 
@@ -87,7 +87,7 @@ DELETE /api/usuarios/{id}
 - 404 Not Found: Usuário não encontrado.
 
 ## 4. Buscar Usuário por ID
-GET /api/usuarios/{id}
+GET /api/lista/{id}
 
 **Resposta:**
 
@@ -96,7 +96,7 @@ GET /api/usuarios/{id}
 - 404 Not Found: Usuário não encontrado.
 
 ## 5. Mostrar Todos os Usuários
-GET /api/usuarios
+GET /api/lista
 
 **Resposta:**
 
