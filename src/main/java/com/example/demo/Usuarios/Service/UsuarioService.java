@@ -13,6 +13,7 @@ import com.example.demo.Usuarios.Mapper.UsuarioMapper;
 import com.example.demo.Usuarios.Model.UsuarioModel;
 import com.example.demo.Usuarios.Repository.UsuarioRepository;
 
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 @Service
@@ -51,9 +52,15 @@ public class UsuarioService {
         return null;
     }
 
-    public void deletar(long id){
-        usuarioRepository.deleteById(id);
+    @Transactional
+    public void softDelete(long id) {
+        Optional<UsuarioModel> usuarioExistente = usuarioRepository.findById(id);
+        usuarioExistente.ifPresent(usuario -> {
+            usuario.setAtivo(false);
+            usuarioRepository.save(usuario);
+        });
     }
+    
 
     public List<UsuarioDto> lista(){
         List<UsuarioModel> user = usuarioRepository.findAll();
@@ -62,8 +69,8 @@ public class UsuarioService {
         .collect(Collectors.toList());
     }
     
-    public UsuarioDto listaId(long id){
-        Optional<UsuarioModel> listarId = usuarioRepository.findById(id);
+    public UsuarioDto listaIdAtivo(long id){
+        Optional<UsuarioModel> listarId = usuarioRepository.findByIdAndAtivoTrue(id);
         return listarId.map(usuarioMapper::map).orElse(null);
     }
 

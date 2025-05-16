@@ -38,7 +38,7 @@ public class UsuarioController {
     public ResponseEntity<String> cadastrar (@Valid @RequestBody UsuarioDto user) {
         UsuarioDto novoUsuario = usuarioService.cadastrar(user);
         return ResponseEntity.status(HttpStatus.CREATED)
-        .body("ausuario criado com sucesso: "+ novoUsuario.getNome() + "(id): " + novoUsuario.getId());
+        .body("usuario criado com sucesso: "+ novoUsuario.getNome() + "(id): " + novoUsuario.getId());
     }
     @GetMapping("/lista")
     public ResponseEntity <List<UsuarioDto>> lista() {
@@ -47,7 +47,7 @@ public class UsuarioController {
     }
     @GetMapping("/lista/{id}")
     public ResponseEntity<?> listaId(@PathVariable Long id) {
-        UsuarioDto usuario = usuarioService.listaId(id);
+        UsuarioDto usuario = usuarioService.listaIdAtivo(id);
         if (usuario !=null){
             return ResponseEntity.ok(usuario);
         }else{
@@ -67,13 +67,13 @@ public class UsuarioController {
         }
     }
     @DeleteMapping("/deletar/{id}")
-    public ResponseEntity<String> deletar(@PathVariable Long id) {
-        if (usuarioService.listaId(id) != null){
-            usuarioService.deletar(id);
-            return ResponseEntity.ok("Usuario com id: "+ id + " deletado com sucesso");
-        }else {
+    public ResponseEntity<String> softDeleteUsuario(@PathVariable Long id) {
+        if (usuarioService.listaIdAtivo(id) != null) { // Verifica se o usuário ativo existe antes de deletar
+            usuarioService.softDelete(id);
+            return ResponseEntity.ok("Usuario com id: " + id + " deletado com sucesso");
+        } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-            .body("id do usuario nao encontrado");
+                    .body("id do usuario nao encontrado ou usuario ja inativo");
         }
     }
     

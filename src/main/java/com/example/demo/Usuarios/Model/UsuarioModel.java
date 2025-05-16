@@ -49,6 +49,9 @@ public class UsuarioModel {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private  LocalDate dataNascimento;
 
+    @Column(name = "ativo")
+    private boolean ativo = true;
+
 
 }
 
