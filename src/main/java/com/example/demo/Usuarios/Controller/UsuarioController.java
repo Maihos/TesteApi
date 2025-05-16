@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,6 +40,15 @@ public class UsuarioController {
         UsuarioDto novoUsuario = usuarioService.cadastrar(user);
         return ResponseEntity.status(HttpStatus.CREATED)
         .body("usuario criado com sucesso: "+ novoUsuario.getNome() + "(id): " + novoUsuario.getId());
+    }
+    @PatchMapping("/senha/{id}")
+    public ResponseEntity<String> alterarSenha(@PathVariable Long id, @RequestBody String novaSenha) {
+        if (usuarioService.atualizarSenha(id, novaSenha)) {
+            return ResponseEntity.ok("Senha do usuario com id: " + id + " alterada com sucesso");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Id do usuario nao encontrado");
+        }
     }
     @GetMapping("/lista")
     public ResponseEntity <List<UsuarioDto>> lista() {

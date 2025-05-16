@@ -40,6 +40,18 @@ public class UsuarioService {
         user = usuarioRepository.save(user);
         return usuarioMapper.map(user);
     }
+    @Transactional
+    public boolean atualizarSenha(long id, String novaSenha) {
+        Optional<UsuarioModel> usuarioExistenteOptional = usuarioRepository.findById(id);
+
+        if (usuarioExistenteOptional.isPresent()) {
+            UsuarioModel usuarioExistente = usuarioExistenteOptional.get();
+            usuarioExistente.setSenha(novaSenha);
+            usuarioRepository.save(usuarioExistente);
+            return true;
+        }
+        return false;
+    }
     
     public UsuarioDto atualizar(long id, UsuarioDto usuarioDto){
         Optional<UsuarioModel> usuarioExistente = usuarioRepository.findById(id);
