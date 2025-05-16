@@ -68,7 +68,7 @@ public class UsuarioController {
     }
     @DeleteMapping("/deletar/{id}")
     public ResponseEntity<String> softDeleteUsuario(@PathVariable Long id) {
-        if (usuarioService.listaIdAtivo(id) != null) { // Verifica se o usuário ativo existe antes de deletar
+        if (usuarioService.listaIdAtivo(id) != null) { 
             usuarioService.softDelete(id);
             return ResponseEntity.ok("Usuario com id: " + id + " deletado com sucesso");
         } else {

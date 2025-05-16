@@ -17,7 +17,8 @@ import jakarta.transaction.Transactional;
 public interface UsuarioRepository extends JpaRepository<UsuarioModel, Long> {
 
 
-    boolean existsByEmail(String email); // Validando se o email ja existe no banco de dados
+    boolean existsByEmail(String email);
+    
     List<UsuarioModel> findByAtivoTrue();
     Optional<UsuarioModel> findByIdAndAtivoTrue(Long id);
 
@@ -25,4 +26,9 @@ public interface UsuarioRepository extends JpaRepository<UsuarioModel, Long> {
     @Modifying
     @Query("UPDATE UsuarioModel u SET u.ativo = false WHERE u.id = :id")
     void softDelete(@Param("id") Long id);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE UsuarioModel u SET u.ativo = false WHERE u.id = :id AND u.ativo = true")
+    int softDeleteAtivo(@Param("id") Long id);
 }

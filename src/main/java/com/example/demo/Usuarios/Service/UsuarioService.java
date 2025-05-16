@@ -53,17 +53,14 @@ public class UsuarioService {
     }
 
     @Transactional
-    public void softDelete(long id) {
-        Optional<UsuarioModel> usuarioExistente = usuarioRepository.findById(id);
-        usuarioExistente.ifPresent(usuario -> {
-            usuario.setAtivo(false);
-            usuarioRepository.save(usuario);
-        });
+    public boolean softDelete(long id) {
+        int linhasAfetadas = usuarioRepository.softDeleteAtivo(id);
+        return linhasAfetadas > 0;
     }
     
 
     public List<UsuarioDto> lista(){
-        List<UsuarioModel> user = usuarioRepository.findAll();
+        List<UsuarioModel> user = usuarioRepository.findByAtivoTrue();
         return user.stream()
         .map(usuarioMapper::map)
         .collect(Collectors.toList());
