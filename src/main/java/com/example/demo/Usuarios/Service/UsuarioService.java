@@ -40,29 +40,15 @@ public class UsuarioService {
         user = usuarioRepository.save(user);
         return usuarioMapper.map(user);
     }
-    @Transactional
-    public boolean atualizarSenha(long id, String novaSenha) {
-        Optional<UsuarioModel> usuarioExistenteOptional = usuarioRepository.findById(id);
-
-        if (usuarioExistenteOptional.isPresent()) {
-            UsuarioModel usuarioExistente = usuarioExistenteOptional.get();
-            usuarioExistente.setSenha(novaSenha);
-            usuarioRepository.save(usuarioExistente);
-            return true;
-        }
-        return false;
-    }
-    
-    public UsuarioDto atualizar(long id, UsuarioDto usuarioDto){
-        Optional<UsuarioModel> usuarioExistente = usuarioRepository.findById(id);
-        if (usuarioExistente.isPresent()){
-            UsuarioModel atualiza = usuarioMapper.map(usuarioDto);
-            atualiza.setId(id);
-            UsuarioModel salvado = usuarioRepository.save(atualiza);
-            return usuarioMapper.map(salvado); 
+    public UsuarioDto atualizar(long id, @Valid UsuarioDto usuarioDto) {
+        int linhasAfetadas = usuarioRepository.atualizarDireto(id, usuarioDto.getNome(), usuarioDto.getSenha());
+        if (linhasAfetadas > 0) {
+            Optional<UsuarioModel> usuarioAtualizadoOptional = usuarioRepository.findByIdAndAtivoTrue(id);
+            return usuarioAtualizadoOptional.map(usuarioMapper::map).orElse(null);
         }
         return null;
     }
+ 
 
     @Transactional
     public boolean softDelete(long id) {

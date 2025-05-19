@@ -41,15 +41,6 @@ public class UsuarioController {
         return ResponseEntity.status(HttpStatus.CREATED)
         .body("usuario criado com sucesso: "+ novoUsuario.getNome() + "(id): " + novoUsuario.getId());
     }
-    @PatchMapping("/senha/{id}")
-    public ResponseEntity<String> alterarSenha(@PathVariable Long id, @RequestBody String novaSenha) {
-        if (usuarioService.atualizarSenha(id, novaSenha)) {
-            return ResponseEntity.ok("Senha do usuario com id: " + id + " alterada com sucesso");
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Id do usuario nao encontrado");
-        }
-    }
     @GetMapping("/lista")
     public ResponseEntity <List<UsuarioDto>> lista() {
         List<UsuarioDto> usuario = usuarioService.lista();
@@ -66,7 +57,7 @@ public class UsuarioController {
         }
         
     }
-    @GetMapping("/atualizar/{id}")
+    @PatchMapping("/atualizar/{id}")
     public ResponseEntity<?> atualizar (@PathVariable Long id, @RequestBody UsuarioDto userAtualizado){
         UsuarioDto user = usuarioService.atualizar(id, userAtualizado);
         if (user != null){

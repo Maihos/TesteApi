@@ -24,11 +24,16 @@ public interface UsuarioRepository extends JpaRepository<UsuarioModel, Long> {
 
     @Transactional
     @Modifying
-    @Query("UPDATE UsuarioModel u SET u.ativo = false WHERE u.id = :id")
-    void softDelete(@Param("id") Long id);
+    @Query("UPDATE UsuarioModel u SET u.ativo = false WHERE u.id = :id AND u.ativo = true")
+    int softDeleteAtivo(@Param("id") Long id);
 
     @Transactional
     @Modifying
-    @Query("UPDATE UsuarioModel u SET u.ativo = false WHERE u.id = :id AND u.ativo = true")
-    int softDeleteAtivo(@Param("id") Long id);
+    @Query("UPDATE UsuarioModel u SET " +
+            "u.nome = CASE WHEN :nome IS NOT NULL THEN :nome ELSE u.nome END, " +
+            "u.senha = CASE WHEN :senha IS NOT NULL THEN :senha ELSE u.senha END " +
+            "WHERE u.id = :id AND u.ativo = true")
+    int atualizarDireto(@Param("id") Long id, @Param("nome") String nome, @Param("senha") String senha);
 }
+    
+
