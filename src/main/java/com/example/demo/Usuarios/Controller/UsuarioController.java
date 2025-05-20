@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -30,13 +31,16 @@ import jakarta.validation.Valid;
 public class UsuarioController {
     @Autowired
     private final UsuarioService usuarioService;
+    private final PasswordEncoder encoder;
 
-    public UsuarioController (UsuarioService usuarioService){
+    public UsuarioController(UsuarioService usuarioService, PasswordEncoder encoder) {
         this.usuarioService = usuarioService;
+        this.encoder = encoder;
     }
 
     @PostMapping("/cadastrar")
     public ResponseEntity<String> cadastrar (@Valid @RequestBody UsuarioDto user) {
+        user.setSenha(encoder.encode(user.getSenha()));
         UsuarioDto novoUsuario = usuarioService.cadastrar(user);
         return ResponseEntity.status(HttpStatus.CREATED)
         .body("usuario criado com sucesso: "+ novoUsuario.getNome() + "(id): " + novoUsuario.getId());
@@ -59,6 +63,7 @@ public class UsuarioController {
     }
     @PatchMapping("/atualizar/{id}")
     public ResponseEntity<?> atualizar (@PathVariable Long id, @RequestBody UsuarioDto userAtualizado){
+        userAtualizado.setSenha(encoder.encode(userAtualizado.getSenha()));
         UsuarioDto user = usuarioService.atualizar(id, userAtualizado);
         if (user != null){
             return ResponseEntity.ok(user);

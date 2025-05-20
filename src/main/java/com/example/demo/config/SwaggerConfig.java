@@ -11,7 +11,10 @@ import io.swagger.v3.oas.models.info.Info;
 public class SwaggerConfig {
     @Bean
     public OpenAPI openAPI() {
-        return new OpenAPI().info(new Info().title("Sping Boot teste REST API").description("Sping Boot teste REST API")
-        .contact(new Contact().name("TESTE")).version("0.01"));
+        return new OpenAPI().info(new Info()
+        .title("Sping Boot teste REST API")
+        .description("Sping Boot teste REST API")
+        .contact(new Contact().name("TESTE"))
+        .version("0.01"));
     }
 }

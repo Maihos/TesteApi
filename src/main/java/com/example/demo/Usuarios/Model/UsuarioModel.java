@@ -43,6 +43,7 @@ public class UsuarioModel {
     @Email(message = "Email Invalido")
     private String email;
 
+    
     private String senha;
 
     @Column

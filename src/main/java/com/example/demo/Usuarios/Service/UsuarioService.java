@@ -1,6 +1,5 @@
 package com.example.demo.Usuarios.Service;
 
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -34,9 +33,6 @@ public class UsuarioService {
         }
         UsuarioModel user = usuarioMapper.map(usuarioDto);
         
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyyyy");
-        user.setSenha(user.getDataNascimento().format(formatter));
-        
         user = usuarioRepository.save(user);
         return usuarioMapper.map(user);
     }
@@ -48,8 +44,6 @@ public class UsuarioService {
         }
         return null;
     }
- 
-
     @Transactional
     public boolean softDelete(long id) {
         int linhasAfetadas = usuarioRepository.softDeleteAtivo(id);
